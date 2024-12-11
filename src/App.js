@@ -7,7 +7,7 @@ import { Input } from "@nextui-org/react";
 import { Menu } from "./components/menu";
 import { Button } from "@nextui-org/react";
 import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
-import { tr } from "framer-motion/client";
+import { s } from "framer-motion/client";
 
 
 const PetIcon = (props) => {
@@ -49,6 +49,7 @@ const PetIcon = (props) => {
 export default function App() {
   const [selectedSimulador, setSelectedSimulador] = React.useState("");
   const [selectedModel, setSelectedModel] = React.useState("");
+  const [selectedForm, setSelectedForm] = React.useState("");
 
 
 
@@ -150,13 +151,204 @@ export default function App() {
                           .find(item => item.tipo === selectedModel)
                           .tipoforms[key] === true) // Filtra apenas os que são true
                         .map((item) => (
-                          <AutocompleteItem key={item} value={item}>
+                          <AutocompleteItem
+                            onPress={() => setSelectedForm(item)}
+
+                            key={item} value={item}>
                             {item}
                           </AutocompleteItem>
                         ))
                     }
 
                   </Autocomplete>
+                  {(selectedForm &&
+                    (selectedModel === "Custos Hidroviários - Alta restrição" ||
+                      selectedModel === "Custos Hidroviários - Média restrição" ||
+                      selectedModel === "Custos Hidroviários - Baixa restrição" ||
+                      selectedModel === "Custos Hidroviários - Cabotagem" ||
+                      selectedModel === "Custos Ferroviários - com tarifas acessórias" ||
+                      selectedModel === "Custos Ferroviários - sem tarifas acessórias")) ? (
+                    <Input
+                      labelPlacement="outside"
+                      className="max-w-xs"
+                      placeholder="0.00"
+                      startContent={
+                        <div className="pointer-events-none flex items-center">
+                          <span className="text-default-400 text-small">Km</span>
+                        </div>
+                      }
+                      label={
+                        selectedForm === "Carga Geral" ? "CG Distância inserida (Km)" :
+                          selectedForm === "Carga Geral Contenizada" ? "CG Conteinerizada Distância inserida (Km)" :
+                            selectedForm === "Granel Líquido" ? "GL Distância inserida (Km)" :
+                              selectedForm === "Granel Sólido Agrícola" ? "GSA Distância inserida (Km)" :
+                                selectedForm === "Granel Sólido Não Agrícola" ? "GSNA Distância inserida (Km)" : ""
+                      }
+                    />
+                  ) : null}
+
+                  {(selectedForm &&
+                    (selectedModel === "Hidro-Ferro-Hidro" ||
+                      selectedModel === "Hidro-Rodo-Hidro" ||
+                      selectedModel === "Rodo-Ferro-Rodo" ||
+                      selectedModel === "Ferro-Ferro" ||
+                      selectedModel === "Rodo-Ferro" ||
+                      selectedModel === "Ferro-Rodo" ||
+                      selectedModel === "Hidro-Rodo" ||
+                      selectedModel === "Rodo-Hidro" ||
+                      selectedModel === "Hidro-Ferro" ||
+                      selectedModel === "Ferro-Hidro")) ? (
+                    <div className="lg:grid-cols-2 grid-cols-1 gap-4 grid">
+                      <Input
+                        labelPlacement="outside"
+                        className="max-w-xs"
+                        placeholder="0.00"
+                        startContent={
+                          <div className="pointer-events-none flex items-center">
+                            <span className="text-default-400 text-small">ton/ano</span>
+                          </div>
+                        }
+                        label={
+                          selectedForm === "CG" ? "Movimentação CG (ton/ano)" :
+                            selectedForm === "GSA" ? "Movimentação GSA (ton/ano)" : ""
+                        }
+                      />
+                      <Input
+                        labelPlacement="outside"
+                        className="max-w-xs"
+                        placeholder="0.00"
+                        startContent={
+                          <div className="pointer-events-none flex items-center">
+                            <span className="text-default-400 text-small">und</span>
+                          </div>
+                        }
+                        label={
+                          selectedForm === "CG" ? "Número de funcionários CG (und)" :
+                            selectedForm === "GSA" ? "Número de funcionários GSA (und)" : ""
+                        }
+                      />
+
+                      <Input
+                        labelPlacement="outside"
+                        className="max-w-xs"
+                        placeholder="0.00"
+                        startContent={
+                          <div className="pointer-events-none flex items-center">
+                            <span className="text-default-400 text-small">R$</span>
+                          </div>
+                        }
+                        label={
+                          selectedForm === "CG" ? "Salário médio CG (R$)" :
+                            selectedForm === "GSA" ? "Salário médio GSA (R$)" : ""
+                        }
+                      />
+
+                      <Input
+                        labelPlacement="outside"
+                        className="max-w-xs"
+                        placeholder="0.00"
+                        startContent={
+                          <div className="pointer-events-none flex items-center">
+                            <span className="text-default-400 text-small">t/h</span>
+                          </div>
+                        }
+                        label={
+                          selectedForm === "CG" ? "Transbordo médio por hora CG (t/h)" :
+                            selectedForm === "GSA" ? "Transbordo médio por hora GSA (t/h)" : ""
+                        }
+                      />
+
+                      <Input
+                        labelPlacement="outside"
+                        className="max-w-xs"
+                        placeholder="0.00"
+                        startContent={
+                          <div className="pointer-events-none flex items-center">
+                            <span className="text-default-400 text-small">dias</span>
+                          </div>
+                        }
+                        label={
+                          selectedForm === "CG" ? "Tempo médio de armazenagem CG (dias)" :
+                            selectedForm === "GSA" ? "Tempo médio de armazenagem GSA (dias)" : ""
+                        }
+                      />
+
+                      <Input
+                        labelPlacement="outside"
+                        className="max-w-xs"
+                        placeholder="0.00"
+                        startContent={
+                          <div className="pointer-events-none flex items-center">
+                            <span className="text-default-400 text-small">R$/Kw</span>
+                          </div>
+                        }
+                        label={
+                          selectedForm === "CG" ? "Tarifa energia CG (R$/Kw)" :
+                            selectedForm === "GSA" ? "Tarifa energia GSA (R$/Kw)" : ""
+                        }
+                      />
+                    </div>
+
+                  ) : null}
+
+                  {(selectedModel === "Transporte Cabotagem" || selectedModel === "Transporte Ferroviario" || selectedModel === "Transporte Hidroviario" || selectedModel === "Transporte Rodoviario") ? (
+
+                    <div className="lg:grid-cols-2 grid-cols-1 gap-4 grid">
+                      <Input
+                        labelPlacement="outside"
+                        className="max-w-xs"
+                        placeholder="0.00"
+                        startContent={
+                          <div className="pointer-events-none flex items-center">
+                            <span className="text-default-400 text-small">TKU</span>
+                          </div>
+                        }
+                        label={
+                          selectedModel === "Transporte Cabotagem" ? "Volume TKU (TKU)" :
+                            selectedModel === "Transporte Ferroviario" ? "Volume TKU (TKU)" :
+                              selectedModel === "Transporte Hidroviario" ? "Volume TKU (TKU)" :
+                                selectedModel === "Transporte Rodoviario" ? "Volume TKU (TKU)" : ""
+                        }
+                      />
+                      <Input
+                        labelPlacement="outside"
+                        className="max-w-xs"
+                        placeholder="0.00"
+                        startContent={
+                          <div className="pointer-events-none flex items-center">
+                            <span className="text-default-400 text-small">L/1000tku</span>
+                          </div>
+                        }
+                        label={
+                          selectedModel === "Transporte Cabotagem" ? "Consumo específico Transporte Cabotagem " :
+                            selectedModel === "Transporte Ferroviario" ? "Consumo específico Transporte Ferroviário " :
+                              selectedModel === "Transporte Hidroviario" ? "Consumo específico Transporte Hidroviário " :
+                                selectedModel === "Transporte Rodoviario" ? "Consumo específico Transporte Rodovíário " : ""
+                        }
+                      />
+                    </div>
+                  ) : null}
+
+                  {(selectedModel === "Calculadora de geração de empregos") ? (
+                    <div className="lg:grid-cols-2 grid-cols-1 gap-4 grid">
+                      <Input
+                        labelPlacement="outside"
+                        className="max-w-xs"
+                        placeholder="0.00"
+                        startContent={
+                          <div className="pointer-events-none flex items-center">
+                            <span className="text-default-400 text-small">R$</span>
+                          </div>
+                        }
+                        label={
+                          selectedModel === "Calculadora de geração de empregos" ? "Investimento (R$)" : ""
+                        }
+                      />
+                    </div>
+                  ) : null}
+
+
+
 
 
 
