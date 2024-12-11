@@ -1,12 +1,13 @@
 import * as React from "react";
 import './App.css';
-import { NextUIProvider } from "@nextui-org/react";
+import { form, NextUIProvider } from "@nextui-org/react";
 import { Card, CardBody, CardFooter } from "@nextui-org/react";
 import { Divider } from "@nextui-org/react";
 import { Input } from "@nextui-org/react";
 import { Menu } from "./components/menu";
 import { Button } from "@nextui-org/react";
 import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
+import { tr } from "framer-motion/client";
 
 
 const PetIcon = (props) => {
@@ -45,9 +46,44 @@ const PetIcon = (props) => {
   );
 };
 
-
 export default function App() {
+  const [selectedSimulador, setSelectedSimulador] = React.useState("");
+  const [selectedModel, setSelectedModel] = React.useState("");
 
+
+
+  const simuladorData = {
+    "Simulador de Custo de Transporte": [
+      { tipo: "Custos Hidroviários - Alta restrição", tipoforms: { geral: true, CG: false, GSA: false } },
+      { tipo: "Custos Hidroviários - Média restrição", tipoforms: { geral: true, CG: false, GSA: false } },
+      { tipo: "Custos Hidroviários - Baixa restrição", tipoforms: { geral: true, CG: false, GSA: false } },
+      { tipo: "Custos Rodoviários", tipoforms: { geral: true, CG: false, GSA: false } },
+      { tipo: "Custos Hidroviários - Cabotagem", tipoforms: { geral: true, CG: false, GSA: false } },
+      { tipo: "Custos Ferroviários - com tarifas acessórias", tipoforms: { geral: true, CG: false, GSA: false } },
+      { tipo: "Custos Ferroviários - sem tarifas acessórias", tipoforms: { geral: true, CG: false, GSA: false } },
+    ],
+    "Simulador de Custo de Transbordo": [
+      { tipo: "Hidro-Ferro-Hidro", tipoforms: { geral: false, CG: true, GSA: false } },
+      { tipo: "Hidro-Rodo-Hidro", tipoforms: { geral: false, CG: true, GSA: false } },
+      { tipo: "Rodo-Ferro-Rodo", tipoforms: { geral: false, CG: true, GSA: false } },
+      { tipo: "Ferro-Ferro", tipoforms: { geral: false, CG: true, GSA: true } },
+      { tipo: "Rodo-Ferro", tipoforms: { geral: false, CG: false, GSA: true } },
+      { tipo: "Ferro-Rodo", tipoforms: { geral: false, CG: false, GSA: true } },
+      { tipo: "Hidro-Rodo", tipoforms: { geral: false, CG: false, GSA: true } },
+      { tipo: "Rodo-Hidro", tipoforms: { geral: false, CG: false, GSA: true } },
+      { tipo: "Hidro-Ferro", tipoforms: { geral: false, CG: false, GSA: true } },
+      { tipo: "Ferro-Hidro", tipoforms: { geral: false, CG: false, GSA: true } },
+    ],
+    "Simulador de Gases de Efeito Estufa (GEE)": [
+      { tipo: "Transporte Cabotagem", tipoforms: { geral: false, CG: false, GSA: false, tks: true } },
+      { tipo: "Transporte Ferroviario", tipoforms: { geral: false, CG: false, GSA: false, tks: true } },
+      { tipo: "Transporte Hidroviario", tipoforms: { geral: false, CG: false, GSA: false, tks: true } },
+      { tipo: "Transporte Rodoviario", tipoforms: { geral: false, CG: false, GSA: false, tks: true } },
+    ],
+    "Calculadora de Empregos": [
+      { tipo: "Calculadora de geração de empregos", tipoforms: { geral: false, CG: false, GSA: false, tks: false, gp: true } },
+    ],
+  };
   return (
 
     <NextUIProvider>
@@ -67,31 +103,60 @@ export default function App() {
                     startContent={<PetIcon className="text-xl" />}
                     variant="bordered"
                   >
+                    {Object.keys(simuladorData).map((item) => (
+                      <AutocompleteItem
+                        onPress={() => {
+                          setSelectedSimulador(item);
+                          setSelectedModel(""); // Limpa o estado selectedModel
+                        }}
+                        key={item}
+                        value={item}
+                      >
+                        {item}
+                      </AutocompleteItem>
+                    ))}
+                  </Autocomplete>
+
+                  <Autocomplete
+                    className="max-w-xs"
+                    label="Select a model"
+                    placeholder="Search for a model"
+                    startContent={<PetIcon className="text-xl" />}
+                    variant="bordered"
+                  >
+                    {simuladorData[selectedSimulador]?.map((item) => (
+                      <AutocompleteItem
+                        onPress={() => setSelectedModel(item.tipo)}
+                        key={item.tipo} value={item.tipo}>
+                        {item.tipo}
+                      </AutocompleteItem>
+                    ))}
 
                   </Autocomplete>
 
                   <Autocomplete
                     className="max-w-xs"
-                    label="Select a Simulador"
-                    placeholder="Search for a Simulador"
+                    label="Select a model"
+                    placeholder="Search for a model"
                     startContent={<PetIcon className="text-xl" />}
                     variant="bordered"
+                    isDisabled={selectedSimulador === "Simulador de Gases de Efeito Estufa (GEE)" || selectedSimulador === "Calculadora de Empregos"}
                   >
-
-
+                    {selectedModel &&
+                      Object.keys(simuladorData[selectedSimulador]
+                        .find(item => item.tipo === selectedModel)
+                        .tipoforms)
+                        .filter(key => simuladorData[selectedSimulador]
+                          .find(item => item.tipo === selectedModel)
+                          .tipoforms[key] === true) // Filtra apenas os que são true
+                        .map((item) => (
+                          <AutocompleteItem key={item} value={item}>
+                            {item}
+                          </AutocompleteItem>
+                        ))
+                    }
 
                   </Autocomplete>
-
-                  <Autocomplete
-                    className="max-w-xs"
-                    label="Select a Simulador"
-                    placeholder="Search for a Simulador"
-                    startContent={<PetIcon className="text-xl" />}
-                    variant="bordered"
-                  >
-                  </Autocomplete>
-
-
 
 
 
