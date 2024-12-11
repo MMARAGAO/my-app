@@ -1,13 +1,12 @@
 import * as React from "react";
 import './App.css';
-import { form, NextUIProvider } from "@nextui-org/react";
+import { NextUIProvider } from "@nextui-org/react";
 import { Card, CardBody, CardFooter } from "@nextui-org/react";
 import { Divider } from "@nextui-org/react";
 import { Input } from "@nextui-org/react";
 import { Menu } from "./components/menu";
 import { Button } from "@nextui-org/react";
 import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
-import { s } from "framer-motion/client";
 
 
 const PetIcon = (props) => {
@@ -89,7 +88,7 @@ export default function App() {
 
     <NextUIProvider>
       <Menu />
-      <main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
+      <main className="container mx-auto max-w-7xl lg:pt-16 pt-8 px-6 flex-grow">
 
         <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
           <Card className="w-full ">
@@ -109,6 +108,7 @@ export default function App() {
                         onPress={() => {
                           setSelectedSimulador(item);
                           setSelectedModel(""); // Limpa o estado selectedModel
+                          setSelectedForm(""); // Limpa o estado selectedForm
                         }}
                         key={item}
                         value={item}
@@ -161,7 +161,7 @@ export default function App() {
                     }
 
                   </Autocomplete>
-                  {(selectedForm &&
+                  {(selectedForm && selectedForm.trim() !== "" &&
                     (selectedModel === "Custos Hidroviários - Alta restrição" ||
                       selectedModel === "Custos Hidroviários - Média restrição" ||
                       selectedModel === "Custos Hidroviários - Baixa restrição" ||
@@ -187,7 +187,7 @@ export default function App() {
                     />
                   ) : null}
 
-                  {(selectedForm &&
+                  {(selectedForm && selectedForm.trim() !== "" &&
                     (selectedModel === "Hidro-Ferro-Hidro" ||
                       selectedModel === "Hidro-Rodo-Hidro" ||
                       selectedModel === "Rodo-Ferro-Rodo" ||
@@ -346,11 +346,6 @@ export default function App() {
                       />
                     </div>
                   ) : null}
-
-
-
-
-
 
                   <Divider />
                   <h1 className="text-sm text-default-400">
