@@ -6,41 +6,24 @@ import { Divider } from "@nextui-org/react";
 import { Input } from "@nextui-org/react";
 import { Menu } from "./components/menu";
 import { Button } from "@nextui-org/react";
-import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
+import { Select, SelectItem } from "@nextui-org/react";
+import { CircularProgress } from "@nextui-org/progress";
+
 
 
 const PetIcon = (props) => {
   return (
     <svg
-      aria-hidden="true"
-      fill="none"
-      focusable="false"
-      height="1em"
-      role="presentation"
-      viewBox="0 0 24 24"
-      width="1em"
       {...props}
-    >
-      <path
-        d="M19.0803 15.7203C18.4903 12.1903 15.1003 9.32031 11.5203 9.32031C7.63028 9.32031 4.21028 12.4703 3.88028 16.3503C3.75028 17.8503 4.23028 19.2703 5.22028 20.3403C6.20028 21.4103 7.58028 22.0003 9.08028 22.0003H13.7603C15.4503 22.0003 16.9303 21.3403 17.9403 20.1503C18.9503 18.9603 19.3503 17.3803 19.0803 15.7203Z"
-        fill="currentColor"
-      />
-      <path
-        d="M10.2796 7.86C11.8978 7.86 13.2096 6.54819 13.2096 4.93C13.2096 3.31181 11.8978 2 10.2796 2C8.66141 2 7.34961 3.31181 7.34961 4.93C7.34961 6.54819 8.66141 7.86 10.2796 7.86Z"
-        fill="currentColor"
-      />
-      <path
-        d="M16.94 9.02844C18.2876 9.02844 19.38 7.93601 19.38 6.58844C19.38 5.24086 18.2876 4.14844 16.94 4.14844C15.5924 4.14844 14.5 5.24086 14.5 6.58844C14.5 7.93601 15.5924 9.02844 16.94 9.02844Z"
-        fill="currentColor"
-      />
-      <path
-        d="M20.5496 12.9313C21.6266 12.9313 22.4996 12.0582 22.4996 10.9812C22.4996 9.90429 21.6266 9.03125 20.5496 9.03125C19.4727 9.03125 18.5996 9.90429 18.5996 10.9812C18.5996 12.0582 19.4727 12.9313 20.5496 12.9313Z"
-        fill="currentColor"
-      />
-      <path
-        d="M3.94 10.9816C5.28757 10.9816 6.38 9.88914 6.38 8.54156C6.38 7.19399 5.28757 6.10156 3.94 6.10156C2.59243 6.10156 1.5 7.19399 1.5 8.54156C1.5 9.88914 2.59243 10.9816 3.94 10.9816Z"
-        fill="currentColor"
-      />
+
+      fill="currentColor" width="1.5em" height="1.5em" viewBox="0 0 256 256" id="Flat" xmlns="http://www.w3.org/2000/svg">
+      <g opacity="0.2">
+        <path d="M176,144H16v40a8,8,0,0,0,8,8H44a24,24,0,0,1,48,0h72a23.99048,23.99048,0,0,1,11.99813-20.78815Z" />
+      </g>
+      <g opacity="0.2">
+        <path d="M212,192a24.00631,24.00631,0,0,0-36.00187-20.78815L176,120h64v64a8,8,0,0,1-8,8H212" />
+      </g>
+      <path d="M247.99682,119.94092c-.00073-.084-.00952-.168-.01269-.252-.00855-.22216-.02271-.44287-.04907-.66015-.01148-.09424-.02808-.188-.04322-.28223-.03393-.21631-.07568-.4292-.12695-.63965-.02051-.08447-.0415-.16845-.06494-.25293q-.10035-.36108-.23364-.708c-.0149-.03858-.02344-.07862-.03882-.11719l-.04956-.12354-.01075-.02734-13.928-34.82031A15.92368,15.92368,0,0,0,218.58374,72h-34.584V64a8.00039,8.00039,0,0,0-8-8h-152a16.01833,16.01833,0,0,0-16,16V184a16.01833,16.01833,0,0,0,16,16h13.0127a32.00444,32.00444,0,0,0,61.97461,0h58.02539a32.00444,32.00444,0,0,0,61.97461,0h13.01269a16.01833,16.01833,0,0,0,16-16V120C247.99975,119.98,247.99682,119.96094,247.99682,119.94092ZM218.58374,88l9.59961,24h-44.1836V88Zm-50.584-16v64h-144V72Zm-144,80h144v15.04687A32.06465,32.06465,0,0,0,157.01245,184H98.98706a32.00444,32.00444,0,0,0-61.97461,0H23.99975Zm44,56a16,16,0,1,1,16-16A16.01833,16.01833,0,0,1,67.99975,208Zm120,0a16,16,0,1,1,16-16A16.01833,16.01833,0,0,1,187.99975,208Zm44-24H218.98706a31.93034,31.93034,0,0,0-34.98731-23.74121V128h48Z" />
     </svg>
   );
 };
@@ -49,6 +32,24 @@ export default function App() {
   const [selectedSimulador, setSelectedSimulador] = React.useState("");
   const [selectedModel, setSelectedModel] = React.useState("");
   const [selectedForm, setSelectedForm] = React.useState("");
+  const [isLoaded, setIsLoaded] = React.useState(false);
+  const [submitForm, setSubmitForm] = React.useState(false);
+
+
+  const submit = () => {
+    setIsLoaded(true);
+    setTimeout(() => {
+      setIsLoaded(false);
+      setSubmitForm(true);
+    }, 2000);
+  };
+
+
+  React.useEffect(() => {
+    console.log("selectedSimulador", selectedSimulador);
+    console.log("selectedModel", selectedModel);
+    console.log("selectedForm", selectedForm);
+  }, [selectedSimulador, selectedModel, selectedForm]);
 
 
 
@@ -88,23 +89,22 @@ export default function App() {
 
     <NextUIProvider>
       <Menu />
-      <main className="container mx-auto max-w-7xl lg:pt-16 pt-8 px-6 flex-grow">
+      <main className="container mx-auto max-w-7xl  px-6 flex-grow">
 
-        <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-          <Card className="w-full ">
+        <section className="flex flex-col items-center justify-center">
+          <Card className="w-full lg:p-4">
             <CardBody>
-              <div className=" grid lg:grid-cols-2 grid-cols-1 gap-4 ">
-                <div className="flex flex-col gap-5 lg:border-r border-default-200 p-4">
+              <div className=" grid lg:grid-cols-2 grid-cols-1 gap-4  ">
+                <div className="flex flex-col gap-5 lg:border-r border-default-200 p-4 ">
                   <h1>Payment details</h1>
-                  <Autocomplete
-                    className="max-w-xs"
+                  <Select
                     label="Select a Simulador"
                     placeholder="Search for a Simulador"
                     startContent={<PetIcon className="text-xl" />}
                     variant="bordered"
                   >
                     {Object.keys(simuladorData).map((item) => (
-                      <AutocompleteItem
+                      <SelectItem
                         onPress={() => {
                           setSelectedSimulador(item);
                           setSelectedModel(""); // Limpa o estado selectedModel
@@ -114,29 +114,27 @@ export default function App() {
                         value={item}
                       >
                         {item}
-                      </AutocompleteItem>
+                      </SelectItem>
                     ))}
-                  </Autocomplete>
+                  </Select>
 
-                  <Autocomplete
-                    className="max-w-xs"
+                  <Select
                     label="Select a model"
                     placeholder="Search for a model"
                     startContent={<PetIcon className="text-xl" />}
                     variant="bordered"
                   >
                     {simuladorData[selectedSimulador]?.map((item) => (
-                      <AutocompleteItem
+                      <SelectItem
                         onPress={() => setSelectedModel(item.tipo)}
                         key={item.tipo} value={item.tipo}>
                         {item.tipo}
-                      </AutocompleteItem>
+                      </SelectItem>
                     ))}
 
-                  </Autocomplete>
+                  </Select>
 
-                  <Autocomplete
-                    className="max-w-xs"
+                  <Select
                     label="Select a model"
                     placeholder="Search for a model"
                     startContent={<PetIcon className="text-xl" />}
@@ -151,16 +149,16 @@ export default function App() {
                           .find(item => item.tipo === selectedModel)
                           .tipoforms[key] === true) // Filtra apenas os que são true
                         .map((item) => (
-                          <AutocompleteItem
+                          <SelectItem
                             onPress={() => setSelectedForm(item)}
 
                             key={item} value={item}>
                             {item}
-                          </AutocompleteItem>
+                          </SelectItem>
                         ))
                     }
 
-                  </Autocomplete>
+                  </Select>
                   {(selectedForm && selectedForm.trim() !== "" &&
                     (selectedModel === "Custos Hidroviários - Alta restrição" ||
                       selectedModel === "Custos Hidroviários - Média restrição" ||
@@ -170,7 +168,6 @@ export default function App() {
                       selectedModel === "Custos Ferroviários - sem tarifas acessórias")) ? (
                     <Input
                       labelPlacement="outside"
-                      className="max-w-xs"
                       placeholder="0.00"
                       startContent={
                         <div className="pointer-events-none flex items-center">
@@ -201,7 +198,6 @@ export default function App() {
                     <div className="lg:grid-cols-2 grid-cols-1 gap-4 grid">
                       <Input
                         labelPlacement="outside"
-                        className="max-w-xs"
                         placeholder="0.00"
                         startContent={
                           <div className="pointer-events-none flex items-center">
@@ -215,7 +211,6 @@ export default function App() {
                       />
                       <Input
                         labelPlacement="outside"
-                        className="max-w-xs"
                         placeholder="0.00"
                         startContent={
                           <div className="pointer-events-none flex items-center">
@@ -230,7 +225,6 @@ export default function App() {
 
                       <Input
                         labelPlacement="outside"
-                        className="max-w-xs"
                         placeholder="0.00"
                         startContent={
                           <div className="pointer-events-none flex items-center">
@@ -245,7 +239,6 @@ export default function App() {
 
                       <Input
                         labelPlacement="outside"
-                        className="max-w-xs"
                         placeholder="0.00"
                         startContent={
                           <div className="pointer-events-none flex items-center">
@@ -260,7 +253,6 @@ export default function App() {
 
                       <Input
                         labelPlacement="outside"
-                        className="max-w-xs"
                         placeholder="0.00"
                         startContent={
                           <div className="pointer-events-none flex items-center">
@@ -275,7 +267,6 @@ export default function App() {
 
                       <Input
                         labelPlacement="outside"
-                        className="max-w-xs"
                         placeholder="0.00"
                         startContent={
                           <div className="pointer-events-none flex items-center">
@@ -296,7 +287,6 @@ export default function App() {
                     <div className="lg:grid-cols-2 grid-cols-1 gap-4 grid">
                       <Input
                         labelPlacement="outside"
-                        className="max-w-xs"
                         placeholder="0.00"
                         startContent={
                           <div className="pointer-events-none flex items-center">
@@ -312,7 +302,6 @@ export default function App() {
                       />
                       <Input
                         labelPlacement="outside"
-                        className="max-w-xs"
                         placeholder="0.00"
                         startContent={
                           <div className="pointer-events-none flex items-center">
@@ -333,7 +322,6 @@ export default function App() {
                     <div className="lg:grid-cols-2 grid-cols-1 gap-4 grid">
                       <Input
                         labelPlacement="outside"
-                        className="max-w-xs"
                         placeholder="0.00"
                         startContent={
                           <div className="pointer-events-none flex items-center">
@@ -358,23 +346,20 @@ export default function App() {
                 <Divider className="lg:hidden" />
 
                 <div className="flex flex-col gap-4 p-4">
-                  <h1>Single</h1>
+                  <h1>
+                    {!selectedForm ? "Select a model" : selectedForm}
+                  </h1>
                   <div className="flex gap-2 ">
-                    <h1 className="text-sm text-default-400">$8.00</h1>
+                    <h1 className="text-sm text-default-400">{!selectedSimulador ? "Select a Simulador" : selectedSimulador}</h1>
                     <Divider orientation="vertical" />
-                    <h1 className="text-sm text-default-400">Unlimited access</h1>
-                    <Divider orientation="vertical" />
-                    <h1 className="text-sm text-default-400">Month</h1>
+                    <h1 className="text-sm text-default-400">{!selectedModel ? "Select a model" : selectedModel}</h1>
                   </div>
-                  <Card className="bg-default-100 border border-default-200 shadow-inner">
-                    <CardBody>
-                      <div className="flex flex-col gap-3">
-                        <Input
-                          label="Promo Code"
-                          labelPlacement="outside"
-                          type="text"
-                        />
-                        <Divider />
+                  <Card className="bg-default-100 border border-default-200 shadow-inner p-4 l g:h-full h-72 relative">
+                    {isLoaded && (
+                      <CircularProgress size="large" className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+                    )}
+                    <CardBody className={`flex flex-col gap-4 ${submitForm ? "" : "hidden"}`}>
+                      <div className="flex flex-col gap-4">
                         <div className="flex justify-between">
                           <div>
                             <h1 className="text-default-500 text-sm">
@@ -412,9 +397,12 @@ export default function App() {
                     </CardBody>
                   </Card>
                   <div className="flex justify-between">
-                    <h1>Due today</h1>
+                    <h1>Custo</h1>
                     <div className="text-right">
-                      <h1 className="text-default-500">$8.00</h1>+ applicable tax
+                      <h1 className="text-default-500">
+                        {submitForm ? "$8.00" : "$0.00"}
+
+                      </h1>+ Taxas
                     </div>
                   </div>
                 </div>
@@ -423,8 +411,20 @@ export default function App() {
             </CardBody>
             <CardFooter>
               <div className="flex justify-between w-full">
-                <Button>Clear</Button>
-                <Button color="primary">Pay</Button>
+                <Button
+                  onPress={() => {
+                    setSelectedSimulador("");
+                    setSelectedModel("");
+                    setSelectedForm("");
+                    setSubmitForm(false);
+                    setIsLoaded(false);
+                  }
+                  }
+                >Clear</Button>
+                <Button color="primary"
+                  isDisabled={submitForm}
+                  onPress={submit}
+                >Pay</Button>
               </div>
             </CardFooter>
           </Card>
